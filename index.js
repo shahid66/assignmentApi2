@@ -25,7 +25,7 @@ mongoose
     .catch((err) => console.log("DB Error => ", err));
 
 // routes middleware
-app.use("/api/v1",router)
+app.use(router)
 
 // server
 const port = process.env.PORT || 9000;
