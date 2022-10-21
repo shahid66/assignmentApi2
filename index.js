@@ -7,6 +7,7 @@ const morgan = require("morgan");
 const cors = require('cors');
 const { readdirSync } = require("fs");
 const router = require('./src/routes/api');
+const path = require('path');
 
 
 
@@ -30,6 +31,11 @@ mongoose
 
 // routes middleware
 app.use(router)
+
+app.use(express.static('client/build'))
+app.get('*',(req,res)=>{
+    res.sendFile(path.resolve(__dirname,'client','build','index.html'))
+})
 
 // server
 const port = process.env.PORT || 9000;
