@@ -25,10 +25,10 @@ mongoose
     .catch((err) => console.log("DB Error => ", err));
 
 // routes middleware
-app.use(router)
+app.use("/api/v1",router)
 
 // server
-const port = process.env.PORT || 7000;
+const port = process.env.PORT || 9000;
 
 app.listen(port, () => {
     console.log(`App is  running on port ${port}`);
