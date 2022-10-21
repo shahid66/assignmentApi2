@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use(cors(
     {
-        origin:"http://localhost:300"
+        origin:"http://localhost:3000"
     }
 ));
 
