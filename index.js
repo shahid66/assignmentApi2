@@ -20,7 +20,14 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cors(
+    {
+        "origin": "*",
+        "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+        "preflightContinue": false,
+        "optionsSuccessStatus": 204
+      }
+));
 
 // DB Connection
 mongoose
