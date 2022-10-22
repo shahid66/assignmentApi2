@@ -17,7 +17,7 @@ exports.registration = (req, res) => {
 exports.profileUpdate = (req, res) => {
   let email = req.headers["email"];
   let reqBody = req.body;
-  console.log(reqBody);
+
   UsersModel.updateOne({ email: email }, reqBody, (err, data) => {
     if (err) {
       res.status(400).json({ status: "fail", data: err });
