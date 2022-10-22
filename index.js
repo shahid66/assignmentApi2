@@ -16,7 +16,7 @@ app.use(helmet())
 app.use(express.static('public'));
 app.use(express.json({limit:'50mb'}))
 
-app.use(express.urlencoded({ extended: false,limit:'50mb' }));
+app.use(express.urlencoded({ extended: true,limit:'50mb' }));
 
 app.use(morgan("dev"));
 app.use(cors());
