@@ -1,7 +1,6 @@
 const UsersModel = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
-const OTPModel = require("../models/OTPModel");
-const EmailUtility = require("../helpers/NodeMailer");
+
 
 exports.registration = (req, res) => {
   let reqBody = req.body;
@@ -91,82 +90,8 @@ exports.getProfile = (req, res) => {
   );
 };
 
-exports.recoveryEmail = async (req, res) => {
-  let email = req.params.email;
-  let OTPCode = Math.floor(10000 + Math.random() * 900000);
 
-  try {
-    //Email Query
-    let UserCount = await UsersModel.aggregate([
-      { $match: { email: email } },
-      { $count: "total" },
-    ]);
 
-    if (UserCount[0].total > 0) {
-      //OTP insert
-      let CreateOTP = await OTPModel.create({ email: email, otp: OTPCode });
-      //Email send
-      let SendMail = await EmailUtility(
-        email,
-        "Your PIN Code= " + OTPCode,
-        "Task Manager PIN Verification"
-      );
 
-      res.status(200).json({ status: "success", data: SendMail });
-    } else {
-      res.status(200).json({ status: "fail", data: "No User Found" });
-    }
-  } catch (e) {
-    res.status(200).json({ status: "fail", data: e });
-  }
-};
 
-exports.RecoveryVerifyOTP = async (req, res) => {
-  let email = req.params.email;
-  let OTP = req.params.OTP;
-  let status=0;
-  let UpdateStatus=1;
-  
 
-  try {
-    //Email Query
-    let CountOTP = await OTPModel.aggregate([{$match:{email:email, otp: OTP,status:status  }},{$count:'total'}]);
-
-    if (CountOTP[0].total >  0) {
-      //OTP Update
-     let UpdateOTPStatus= await OTPModel.updateOne({email:email, otp: OTP,status:status},{email:email, otp: OTP,status:UpdateStatus})
-     
-
-      res.status(200).json({ status: "success", data: UpdateOTPStatus });
-    } else {
-      res.status(200).json({ status: "fail", data: "Invalid OTP" });
-    }
-  } catch (e) {
-    res.status(200).json({ status: "failr", data: e });
-  }
-};
-
-exports.CreatePassword = async (req, res) => {
-  let email = req.body.email;
-  let OTPCode=req.body.otp
-  let password = req.body.password;
-  let UpdateStatus=1;
-  
-
-  try {
-    //Email Query
-    let CountOTP = await OTPModel.aggregate([{$match:{email:email, otp: OTPCode,status:UpdateStatus  }},{$count:'total'}]);
-
-    if (CountOTP[0].total >  0) {
-      //OTP Update
-     let UpdatePassword= await UsersModel.updateOne({email:email,},{password: password})
-     
-
-      res.status(200).json({ status: "success", data: UpdatePassword });
-    } else {
-      res.status(200).json({ status: "fail", data: "Invalid OTP" });
-    }
-  } catch (e) {
-    res.status(200).json({ status: "failr", data: e });
-  }
-};
